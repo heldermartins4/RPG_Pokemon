@@ -28,6 +28,7 @@ public class Player extends Entity {
         this.width = width;
         this.height = height;
         this.speed = speed;
+        this.sprite = 2;
 
         direction = "down";
     }
@@ -51,21 +52,48 @@ public class Player extends Entity {
     }
 
     public void update() {
-        if (key.up) {
+
+        if (key.up || key.down || key.left || key.right) {
+            if (key.up) {
             y -= speed;
             direction = "up";
-        }
-        if (key.down) {
-            y += speed;
-            direction = "down";
-        }
-        if (key.left) {
-            x -= speed;
-            direction = "left";
-        }
-        if (key.right) {
-            x += speed;
-            direction = "right";
+
+            if (this.sprite_counting < this.sprite - 1) {
+                this.sprite_counting++;
+            } else if (this.sprite_counting > 0) {
+                this.sprite_counting--;
+            }
+            }
+            if (key.down) {
+                y += speed;
+                direction = "down";
+
+                if (this.sprite_counting < this.sprite - 1) {
+                    this.sprite_counting++;
+                } else if (this.sprite_counting > 0) {
+                    this.sprite_counting--;
+                }
+            }
+            if (key.left) {
+                x -= speed;
+                direction = "left";
+
+                if (this.sprite_counting < this.sprite - 1) {
+                    this.sprite_counting++;
+                } else if (this.sprite_counting > 0) {
+                    this.sprite_counting--;
+                }
+            }
+            if (key.right) {
+                x += speed;
+                direction = "right";
+
+                if (this.sprite_counting < this.sprite - 1) {
+                    this.sprite_counting++;
+                } else if (this.sprite_counting > 0) {
+                    this.sprite_counting--;
+                }
+            }
         }
     }
 
@@ -79,16 +107,32 @@ public class Player extends Entity {
         // set image based on direction
         switch (direction) {
             case "up":
-                img = up1;
+                if (this.sprite_counting == 0) {
+                    img = up1;
+                } else if (this.sprite_counting == 1) {
+                    img = up2;
+                }
                 break;
             case "down":
-                img = down1;
+                if (this.sprite_counting == 0) {
+                    img = down1;
+                } else if (this.sprite_counting == 1) {
+                    img = down2;
+                }
                 break;
             case "left":
-                img = left1;
+                if (this.sprite_counting == 0) {
+                    img = left1;
+                } else if (this.sprite_counting == 1) {
+                    img = left2;
+                }
                 break;
             case "right":
-                img = right1;
+                if (this.sprite_counting == 0) {
+                    img = right1;
+                } else if (this.sprite_counting == 1) {
+                    img = right2;
+                }
                 break;
         }
 
