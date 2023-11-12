@@ -15,6 +15,8 @@ public class Player extends Entity {
     GamePanel gp;
     KeyHandler key;
 
+    int spriteTimer = 0;
+
     public Player(GamePanel gp, KeyHandler key) {
         this.gp = gp;
         this.key = key;
@@ -52,48 +54,47 @@ public class Player extends Entity {
     }
 
     public void update() {
-
-        if (key.up || key.down || key.left || key.right) {
+        boolean isMoving = key.up || key.down || key.left || key.right;
+    
+        if (isMoving) {
+            // Realizar a animação apenas se estiver em movimento
             if (key.up) {
-            y -= speed;
-            direction = "up";
-
-            if (this.sprite_counting < this.sprite - 1) {
-                this.sprite_counting++;
-            } else if (this.sprite_counting > 0) {
-                this.sprite_counting--;
-            }
-            }
-            if (key.down) {
-                y += speed;
+                direction = "up";
+            } else if (key.down) {
                 direction = "down";
-
-                if (this.sprite_counting < this.sprite - 1) {
-                    this.sprite_counting++;
-                } else if (this.sprite_counting > 0) {
-                    this.sprite_counting--;
-                }
-            }
-            if (key.left) {
-                x -= speed;
+            } else if (key.left) {
                 direction = "left";
-
-                if (this.sprite_counting < this.sprite - 1) {
-                    this.sprite_counting++;
-                } else if (this.sprite_counting > 0) {
-                    this.sprite_counting--;
-                }
-            }
-            if (key.right) {
-                x += speed;
+            } else if (key.right) {
                 direction = "right";
-
-                if (this.sprite_counting < this.sprite - 1) {
-                    this.sprite_counting++;
-                } else if (this.sprite_counting > 0) {
-                    this.sprite_counting--;
-                }
             }
+    
+            // Alternar entre os quadros da animação de forma suave
+            if (spriteTimer >= 10) { // Ajuste o valor 10 conforme necessário para definir a velocidade da animação
+                this.sprite_counting++;
+                if (this.sprite_counting >= this.sprite) {
+                    this.sprite_counting = 0;
+                }
+                spriteTimer = 0;
+            } else {
+                spriteTimer++;
+            }
+        } else {
+            // Se não estiver em movimento, mantenha a contagem de sprites zerada para interromper a animação
+            this.sprite_counting = 0;
+        }
+    
+        // Atualizar a posição do jogador
+        if (key.up) {
+            y -= speed;
+        }
+        if (key.down) {
+            y += speed;
+        }
+        if (key.left) {
+            x -= speed;
+        }
+        if (key.right) {
+            x += speed;
         }
     }
 

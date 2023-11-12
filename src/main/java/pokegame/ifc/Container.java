@@ -1,5 +1,8 @@
 package pokegame.ifc;
 
+import java.awt.image.BufferedImage;
+
+import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
 // import controllers.game.Pokeleague;
@@ -22,12 +25,22 @@ public class Container extends JFrame {
     public void initialize() {
         // Pokeleague poke = new Pokeleague();
         GamePanel screen = new GamePanel();
-        this.add(screen);
-        this.pack();
-        this.addKeyListener(screen.key);
-        this.requestFocus();
-        this.setLocationRelativeTo(null);
 
-        screen.startGameThread();
+        BufferedImage icon = null;
+
+        try {
+            icon = ImageIO.read(getClass().getResource("/assets/bg-room.jpg"));
+            this.setIconImage(icon); // set a custom icon || taskbar icon 
+
+            this.add(screen);
+            this.pack();
+            this.addKeyListener(screen.key);
+            this.requestFocus();
+            this.setLocationRelativeTo(null);
+            
+            screen.startGameThread();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
