@@ -70,25 +70,25 @@ public class Player extends Entity {
             if (key.up) {
 
                 next_y = y - gp.tile_size;
-                // direction = "up";
+                direction = "up";
                 is_walking = true;
 
             } else if (key.down) {
 
                 next_y = y + gp.tile_size;
-                // direction = "down";
+                direction = "down";
                 is_walking = true;
 
             } else if (key.left) {
 
                 next_x = x - gp.tile_size;
-                // direction = "left";
+                direction = "left";
                 is_walking = true;
 
             } else if (key.right) {
 
                 next_x = x + gp.tile_size;
-                // direction = "right";
+                direction = "right";
                 is_walking = true;
 
             }
@@ -105,7 +105,7 @@ public class Player extends Entity {
                 is_walking = false;
             }
 
-            if (sprite_timer >= 10) { // Ajuste o valor 10 conforme necessário para definir a velocidade da animação
+            if (sprite_timer >= sprite) { // Ajuste o valor 10 conforme necessário para definir a velocidade da animação
                 this.sprite_counting++;
                 if (this.sprite_counting >= this.sprite) {
                     this.sprite_counting = 0;
