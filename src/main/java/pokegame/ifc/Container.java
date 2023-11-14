@@ -17,6 +17,8 @@ public class Container extends JFrame {
 
         this.setVisible(true);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        initialize();
     }
 
     // public void startBattle() {}

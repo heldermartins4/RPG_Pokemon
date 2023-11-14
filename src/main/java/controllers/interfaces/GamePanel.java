@@ -13,19 +13,23 @@ import java.awt.image.BufferedImage;
 
 public class GamePanel extends JPanel implements Runnable {
     
-    final int scale_x = 16;
-    final int scale_y = 12;
-    final int screen_width = scale_x * 48;
-    final int screen_height = scale_y * 48;
+    final int scale = 4;
 
-    public int tile_size = 32;
+    final int max_screen_col = 16;
+    final int max_screen_row = 12;
 
-    int player_x = 100;
-    int player_y = 100;
+    private  int original_tile_size = 16;
+    public int tile_size = original_tile_size * scale;
+
+    final int screen_width = tile_size * max_screen_col;
+    final int screen_height = tile_size * max_screen_row;
+
+    int player_x = 0;
+    int player_y = 0;
     int player_speed = 4;
 
     int fps = 60;
-    private long lastUpdateTime = System.nanoTime();
+    private long last_update_time = System.nanoTime();
 
     public KeyHandler key = new KeyHandler();
 
@@ -81,8 +85,8 @@ public class GamePanel extends JPanel implements Runnable {
 
         while (game_thread != null) {
             long now = System.nanoTime();
-            delta += (now - lastUpdateTime) / draw_interval;
-            lastUpdateTime = now;
+            delta += (now - last_update_time) / draw_interval;
+            last_update_time = now;
 
             while (delta >= 1) {
                 update();
@@ -92,7 +96,7 @@ public class GamePanel extends JPanel implements Runnable {
             repaint();
 
             try {
-                double remaining_time = (lastUpdateTime - now + draw_interval) / 1_000_000_000;
+                double remaining_time = (last_update_time - now + draw_interval) / 1_000_000_000;
                 remaining_time = remaining_time < 0 ? 0 : remaining_time;
 
                 Thread.sleep((long)remaining_time);

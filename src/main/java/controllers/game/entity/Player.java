@@ -1,5 +1,6 @@
 package controllers.game.entity;
 
+import java.awt.Color;
 // import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
@@ -15,7 +16,11 @@ public class Player extends Entity {
     GamePanel gp;
     KeyHandler key;
 
-    int spriteTimer = 0;
+    int sprite_timer = 0;
+
+    int next_x, next_y;
+
+    private boolean is_walking = false;
 
     public Player(GamePanel gp, KeyHandler key) {
         this.gp = gp;
@@ -31,6 +36,12 @@ public class Player extends Entity {
         this.height = height;
         this.speed = speed;
         this.sprite = 2;
+
+        this.sprite_counting = 0;
+
+        // define a limiter for the next position
+        this.next_x = x;
+        this.next_y = y;
 
         direction = "down";
     }
@@ -54,47 +65,55 @@ public class Player extends Entity {
     }
 
     public void update() {
-        boolean isMoving = key.up || key.down || key.left || key.right;
-    
-        if (isMoving) {
-            // Realizar a animação apenas se estiver em movimento
+
+        if (!is_walking) {
             if (key.up) {
-                direction = "up";
+
+                next_y = y - gp.tile_size;
+                // direction = "up";
+                is_walking = true;
+
             } else if (key.down) {
-                direction = "down";
+
+                next_y = y + gp.tile_size;
+                // direction = "down";
+                is_walking = true;
+
             } else if (key.left) {
-                direction = "left";
+
+                next_x = x - gp.tile_size;
+                // direction = "left";
+                is_walking = true;
+
             } else if (key.right) {
-                direction = "right";
+
+                next_x = x + gp.tile_size;
+                // direction = "right";
+                is_walking = true;
+
             }
-    
-            // Alternar entre os quadros da animação de forma suave
-            if (spriteTimer >= 10) { // Ajuste o valor 10 conforme necessário para definir a velocidade da animação
+
+            this.sprite_counting = 0;
+        } else {
+            if (y != next_y) {
+                y += speed * Integer.signum(next_y - y);
+            }
+            else if (x != next_x) {
+                x += speed * Integer.signum(next_x - x);
+            }
+            else if (x == next_x && y == next_y) {
+                is_walking = false;
+            }
+
+            if (sprite_timer >= 10) { // Ajuste o valor 10 conforme necessário para definir a velocidade da animação
                 this.sprite_counting++;
                 if (this.sprite_counting >= this.sprite) {
                     this.sprite_counting = 0;
                 }
-                spriteTimer = 0;
+                sprite_timer = 0;
             } else {
-                spriteTimer++;
+                sprite_timer++;
             }
-        } else {
-            // Se não estiver em movimento, mantenha a contagem de sprites zerada para interromper a animação
-            this.sprite_counting = 0;
-        }
-    
-        // Atualizar a posição do jogador
-        if (key.up) {
-            y -= speed;
-        }
-        if (key.down) {
-            y += speed;
-        }
-        if (key.left) {
-            x -= speed;
-        }
-        if (key.right) {
-            x += speed;
         }
     }
 
@@ -105,7 +124,7 @@ public class Player extends Entity {
 
         BufferedImage img = null; // set default image
 
-        // set image based on direction
+        // // set image based on direction
         switch (direction) {
             case "up":
                 if (this.sprite_counting == 0) {
