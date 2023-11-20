@@ -43,6 +43,14 @@ public class Start {
         }
     }
 
+    public Treinador getPlayer() {
+        return player;
+    }
+
+    public Treinador getRival() {
+        return rival;
+    }
+
     public void draw(Graphics2D g) {
         int step = 0;
         switch (step) {
@@ -69,6 +77,8 @@ public class Start {
     public void chooseCharacter(Treinador player, Treinador rival) {
         String choice = null;
 
+        System.out.println("chooseCharacter()");
+
         /* 
          *  Desenhar as sprites dos possiveis personagens e alterar elas conforme input pra direita ou esquerda
          *  dando highlight para a escolhida e checar o input enter para definir o "choice" conforme a sprite
@@ -86,7 +96,7 @@ public class Start {
 
         Scanner teclado = new Scanner(System.in);
 
-        System.out.println("\nWhat`s your name?");
+        System.out.println("namePlayer()");
         String nome = teclado.nextLine();
         this.player.setNome(nome);
 
@@ -97,7 +107,7 @@ public class Start {
 
         Scanner teclado = new Scanner(System.in);
         
-        System.out.println("\nWhat`s your rival`s name?");
+        System.out.println("nameRival()");
         String nome = teclado.nextLine();
         this.rival.setNome(nome);
 
