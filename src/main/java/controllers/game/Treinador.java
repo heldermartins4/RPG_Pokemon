@@ -4,12 +4,12 @@ public class Treinador {
     private String nome;
     private int dinheiro;
     private Pokemon pokemon;
-    private final String sprite;
+    private String character;
 
-    public Treinador(String nome, String sprite) {
+    public Treinador(String nome, String character) {
         this.nome = nome;
         this.dinheiro = 200;
-        this.sprite = sprite;
+        this.character = character;
     }
 
     public String getNome() {
@@ -24,8 +24,16 @@ public class Treinador {
         return this.dinheiro;
     }
 
-    public String getSprite() {
-        return this.sprite;
+    public String getCharater() {
+        return this.character;
+    }
+
+    public void setCharacter(String character) {
+        this.character = character;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 
     public void setPokemon(Pokemon pokemon) {
