@@ -27,7 +27,7 @@ public class Player extends Entity {
         this.gp = gp;
         this.key = key;
 
-        player_sprite = new Sprites[8];  // inicializa o array
+        player_sprite = new Sprites[12];  // inicializa o array
         getImagePlayer();
     }
 
@@ -37,7 +37,7 @@ public class Player extends Entity {
         this.width = width;
         this.height = height;
         this.speed = speed;
-        this.sprite = 2;
+        this.sprite = 3;
 
         this.sprite_counting = 0;
 
@@ -52,26 +52,18 @@ public class Player extends Entity {
         final String relative_path = "/sprites/sprites_char_walk/zeze/";
 
         try {
-            // up1 = ImageIO.read(getClass().getResource(relative_path + "char_up_1.png"));
-            // up2 = ImageIO.read(getClass().getResource(relative_path + "char_up_2.png"));
-            // down1 = ImageIO.read(getClass().getResource(relative_path + "char_down_1.png"));
-            // down2 = ImageIO.read(getClass().getResource(relative_path + "char_down_2.png"));
-            // left1 = ImageIO.read(getClass().getResource(relative_path + "char_left_1.png"));
-            // left2 = ImageIO.read(getClass().getResource(relative_path + "char_left_2.png"));
-            // right1 = ImageIO.read(getClass().getResource(relative_path + "char_right_1.png"));
-            // right2 = ImageIO.read(getClass().getResource(relative_path + "char_right_2.png"));
-            
-            for (int i = 0; i < 8; i++) {
+            for (int i = 0; i < 12; i++) {
 
-                player_sprite[i] = new Sprites();  // inicializa cada elemento
-                if (i < 2)
-                    player_sprite[i].sprite_img = ImageIO.read(getClass().getResource(relative_path + "zeze_u" + (i + 1) +".png"));
-                else if (i < 4)
-                    player_sprite[i].sprite_img = ImageIO.read(getClass().getResource(relative_path + "zeze_d" + (i - 1) +".png"));
+                player_sprite[i] = new Sprites();  // initialize each element
+
+                if (i < 3)
+                    player_sprite[i].sprite_img = ImageIO.read(getClass().getResource(relative_path + "u" + (i + 1) + ".png"));
                 else if (i < 6)
-                    player_sprite[i].sprite_img = ImageIO.read(getClass().getResource(relative_path + "zeze_l" + (i - 3) +".png"));
-                else if (i < 8)
-                    player_sprite[i].sprite_img = ImageIO.read(getClass().getResource(relative_path + "zeze_r" + (i - 5) +".png"));
+                    player_sprite[i].sprite_img = ImageIO.read(getClass().getResource(relative_path + "d" + (i - 2) + ".png"));
+                else if (i < 9)
+                    player_sprite[i].sprite_img = ImageIO.read(getClass().getResource(relative_path + "l" + (i - 5) + ".png"));
+                else if (i < 12)
+                    player_sprite[i].sprite_img = ImageIO.read(getClass().getResource(relative_path + "r" + (i - 8) + ".png"));
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -141,39 +133,55 @@ public class Player extends Entity {
         // // set image based on direction
         switch (player_direction.direction) {
             case "up":
-                if (this.sprite_counting == 0) {
-                    img = player_sprite[0].sprite_img;
-                    // img = up1;
-                } else if (this.sprite_counting == 1) {
-                    img = player_sprite[1].sprite_img;
-                    // img = up2;
+                switch (this.sprite_counting) {
+                    case 0:
+                        img = player_sprite[0].sprite_img;
+                        break;
+                    case 1:
+                        img = player_sprite[1].sprite_img;
+                        break;
+                    case 2:
+                        img = player_sprite[2].sprite_img;
+                        break;
                 }
                 break;
             case "down":
-                if (this.sprite_counting == 0) {
-                    img = player_sprite[2].sprite_img;
-                    // img = down1;
-                } else if (this.sprite_counting == 1) {
-                    img = player_sprite[3].sprite_img;
-                    // img = down2;
+                switch (this.sprite_counting) {
+                    case 0:
+                        img = player_sprite[3].sprite_img;
+                        break;
+                    case 1:
+                        img = player_sprite[4].sprite_img;
+                        break;
+                    case 2:
+                        img = player_sprite[5].sprite_img;
+                        break;
                 }
                 break;
             case "left":
-                if (this.sprite_counting == 0) {
-                    img = player_sprite[4].sprite_img;
-                    // img = left1;
-                } else if (this.sprite_counting == 1) {
-                    img = player_sprite[5].sprite_img;
-                    // img = left2;
+                switch (this.sprite_counting) {
+                    case 0:
+                        img = player_sprite[6].sprite_img;
+                        break;
+                    case 1:
+                        img = player_sprite[7].sprite_img;
+                        break;
+                    case 2:
+                        img = player_sprite[8].sprite_img;
+                        break;
                 }
                 break;
             case "right":
-                if (this.sprite_counting == 0) {
-                    img = player_sprite[6].sprite_img;
-                    // img = right1;
-                } else if (this.sprite_counting == 1) {
-                    img = player_sprite[7].sprite_img;
-                    // img = right2;
+                switch (this.sprite_counting) {
+                    case 0:
+                        img = player_sprite[9].sprite_img;
+                        break;
+                    case 1:
+                        img = player_sprite[10].sprite_img;
+                        break;
+                    case 2:
+                        img = player_sprite[11].sprite_img;
+                        break;
                 }
                 break;
         }
