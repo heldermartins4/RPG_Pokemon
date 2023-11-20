@@ -5,7 +5,6 @@ import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
-// import controllers.game.Pokeleague;
 import controllers.interfaces.GamePanel;
 
 public class Container extends JFrame {
@@ -21,13 +20,8 @@ public class Container extends JFrame {
         initialize();
     }
 
-    // public void startBattle() {}
-    // public void endBattle() {}
-
     public void initialize() {
-        // Pokeleague poke = new Pokeleague();
         GamePanel screen = new GamePanel();
-
         BufferedImage icon = null;
 
         try {
