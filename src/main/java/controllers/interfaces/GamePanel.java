@@ -1,28 +1,33 @@
 package controllers.interfaces;
 
-import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
 import controllers.game.controls.KeyHandler;
 import controllers.game.entity.Player;
+import controllers.interfaces.map.TileManager;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
+// import javax.imageio.ImageIO;
+// import java.awt.image.BufferedImage;
 
 public class GamePanel extends JPanel implements Runnable {
     
-    final int scale = 4;
+    final int scale = 3;
 
-    final int max_screen_col = 16;
-    final int max_screen_row = 12;
+    public int max_screen_col = 16;
+    public int max_screen_row = 12;
 
-    private  int original_tile_size = 16;
-    public int tile_size = original_tile_size * scale;
+    private int original_tile_size = 16;
+    public int tile_size = original_tile_size * scale;  
 
-    final int screen_width = tile_size * max_screen_col;
-    final int screen_height = tile_size * max_screen_row;
+    public int screen_width = tile_size * max_screen_col;
+    public int screen_height = tile_size * max_screen_row;
+    // final int screen_width = 768;
+    // final int screen_height = 576;
+
+    TileManager tm;
 
     int player_x = 0;
     int player_y = 0;
@@ -41,6 +46,8 @@ public class GamePanel extends JPanel implements Runnable {
         // this.setBackground(Color.black);
 
         this.setDoubleBuffered(true);
+
+        tm = new TileManager(max_screen_row, max_screen_col, this);
         
         player.setDefaultValues(player_x, player_y, tile_size, tile_size, player_speed);
     }
@@ -115,16 +122,18 @@ public class GamePanel extends JPanel implements Runnable {
         
         super.paintComponent(g);
 
-        BufferedImage img = null; // set default image
+        // BufferedImage img = null; // set default image
 
-        try {
-            img = ImageIO.read(getClass().getResource("/assets/bg-room.jpg"));
-            g.drawImage(img, 0, 0, screen_width, screen_height, null);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        // try {
+        //     img = ImageIO.read(getClass().getResource("/assets/bg-test.jpg"));
+        //     g.drawImage(img, 0, 0, screen_width, screen_height, null);
+        // } catch (Exception e) {
+        //     e.printStackTrace();
+        // }
 
         Graphics2D g2d = (Graphics2D) g;
+
+        tm.drawTiles(g2d);
         
         player.draw(g2d);
 
