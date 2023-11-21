@@ -2,23 +2,25 @@ package controllers.interfaces.start;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.Scanner;
 
 import controllers.game.Treinador;
 import controllers.interfaces.GamePanel;
 
 public class Start extends JPanel {
 
-    private GamePanel gamePanel;
-    private BufferedImage choose_character, choose_name, choose_rival;
+    private GamePanel screen;
+    private BufferedImage choose_character, character_zeze, character_heldin, choose_name, choose_rival;
     private Treinador player;
     private Treinador rival;
+    
+    private Runnable choicesCompletedCallback;
 
-    public Start(GamePanel gamePanel) {
-
-        this.gamePanel = gamePanel;
+    public Start(GamePanel screen) {
+        
+        this.screen = screen;
         this.player = new Treinador(null, null);
         this.rival = new Treinador(null, null);
         getStartSprites();
@@ -26,65 +28,43 @@ public class Start extends JPanel {
     }
 
     public void getStartSprites() {
-
-        final String relative_path = "/sprites/start/";
+        final String relative_path_background = "/sprites/start/";
+        final String relative_path_characters = "/sprites/characters/";
 
         try {
-            choose_character = ImageIO.read(getClass().getResource(relative_path + "choose_character.png"));
-            choose_name = ImageIO.read(getClass().getResource(relative_path + "choose_name.png"));
-            choose_rival = ImageIO.read(getClass().getResource(relative_path + "choose_rival.png"));
+            choose_character = ImageIO.read(getClass().getResource(relative_path_background + "choose_character.png"));
+            character_zeze = ImageIO.read(getClass().getResource(relative_path_characters + "zeze/d1.png"));
+            character_heldin = ImageIO.read(getClass().getResource(relative_path_characters + "heldin/d1.png"));
+            choose_name = ImageIO.read(getClass().getResource(relative_path_background + "choose_name.png"));
+            choose_rival = ImageIO.read(getClass().getResource(relative_path_background + "choose_rival.png"));
+
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     public void runStartSequence() {
-
-        chooseCharacter(player);
-        namePlayer(player);
+        
+        namePlayer();
         nameRival();
-
-        // Trocar para o painel do mapa
-        gamePanel.showPanel("map");
+        chooseCharacter();
     }
 
-    public void chooseCharacter(Treinador player) {
+    public void namePlayer() {
+        
+        String playerName = JOptionPane.showInputDialog(screen, "Enter your name:");
+        player.setNome(playerName);
 
-        String choice = null;
-        System.out.println("chooseCharacter()");
-
-        /* 
-         * Lógica para escolher o personagem do jogador.
-         * Desenhar as sprites dos possíveis personagens, 
-         * alterar conforme input para direita ou esquerda,
-         * dar highlight para a escolhida e checar o input enter
-         * para definir o "choice" conforme a sprite em highlight.
-         */
-
-        String characterPlayer = choice;
-        this.player.setCharacter(characterPlayer);
-
-        String characterRival = (characterPlayer.equals("sprites/sprites_char_walk/zeze")) 
-            ? "sprites/sprites_char_walk/heldin" 
-            : "sprites/sprites_char_walk/zeze";
-        this.rival.setCharacter(characterRival);
-    }
-
-    public void namePlayer(Treinador player) {
-
-        Scanner teclado = new Scanner(System.in);
-        System.out.println("namePlayer()");
-        String nome = teclado.nextLine();
-        this.player.setNome(nome);
-        teclado.close();
+        nameRival();
     }
 
     public void nameRival() {
 
-        Scanner teclado = new Scanner(System.in);
-        System.out.println("nameRival()");
-        String nome = teclado.nextLine();
-        this.rival.setNome(nome);
-        teclado.close();
+        String rivalName = JOptionPane.showInputDialog(screen, "Enter your rival's name:");
+        rival.setNome(rivalName);
+    }
+
+    public void chooseCharacter() {
+        
     }
 }

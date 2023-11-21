@@ -1,24 +1,21 @@
 package controllers.interfaces;
 
-import javax.swing.JPanel;
+import javax.swing.*;
+import java.awt.*;
 
 import controllers.game.controls.KeyHandler;
 import controllers.interfaces.map.Map;
-
-import java.awt.BorderLayout;
-import java.awt.CardLayout;
-import java.awt.Dimension;
-import java.awt.Graphics;
+import controllers.interfaces.start.Start;
 
 public class GamePanel extends JPanel implements Runnable {
-    
+
     final int scale = 3;
 
     public int max_screen_col = 16;
     public int max_screen_row = 12;
 
     private int original_tile_size = 16;
-    public int tile_size = original_tile_size * scale;  
+    public int tile_size = original_tile_size * scale;
 
     public int screen_width = tile_size * max_screen_col;
     public int screen_height = tile_size * max_screen_row;
@@ -31,19 +28,19 @@ public class GamePanel extends JPanel implements Runnable {
 
     public KeyHandler key = new KeyHandler();
 
-    // private Start startPanel;
+    private Start startPanel;
     private Map mapPanel;
 
     Thread game_thread;
-    
+
     public GamePanel() {
         this.setPreferredSize(new Dimension(screen_width, screen_height));
 
         cardLayout = new CardLayout();
         cardPanel = new JPanel(cardLayout);
 
-        // this.startPanel = new Start(this);
-        // cardPanel.add(startPanel, "start");
+        this.startPanel = new Start(this);
+        cardPanel.add(startPanel, "start");
 
         this.mapPanel = new Map(this);
         cardPanel.add(mapPanel, "map");
@@ -51,8 +48,13 @@ public class GamePanel extends JPanel implements Runnable {
         setLayout(new BorderLayout());
         add(cardPanel, BorderLayout.CENTER);
         cardLayout.show(cardPanel, "start");
+        cardLayout.show(cardPanel, "map");
 
         this.setDoubleBuffered(true);
+        setFocusable(true);
+        addKeyListener(key);
+
+        startGameThread();
     }
 
     public void startGameThread() {
@@ -81,7 +83,7 @@ public class GamePanel extends JPanel implements Runnable {
                 double remaining_time = (last_update_time - now + draw_interval) / 1_000_000_000;
                 remaining_time = remaining_time < 0 ? 0 : remaining_time;
 
-                Thread.sleep((long)remaining_time);
+                Thread.sleep((long) remaining_time);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -93,12 +95,22 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void update() {
-        
         mapPanel.update();
     }
 
     public void paintComponent(Graphics g) {
-        
         mapPanel.paintComponent(g);
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            JFrame frame = new JFrame("Game Frame");
+            GamePanel gamePanel = new GamePanel();
+            frame.getContentPane().add(gamePanel);
+            frame.pack();
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            frame.setLocationRelativeTo(null);
+            frame.setVisible(true);
+        });
     }
 }
