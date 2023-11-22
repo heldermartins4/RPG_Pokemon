@@ -1,6 +1,5 @@
 package controllers.game.sound;
 
-import java.io.File;
 import java.io.InputStream;
 
 public class SoundTrack {
