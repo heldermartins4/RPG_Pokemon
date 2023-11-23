@@ -1,11 +1,10 @@
 package pokegame.main;
 
 import java.awt.image.BufferedImage;
-
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
-import controllers.interfaces.GamePanel;
+import interfaces.GamePanel;
 
 public class Container extends JFrame {
     public Container() {
