@@ -1,5 +1,5 @@
 package controllers.interfaces.start;
-
+// teste 
 import javax.swing.*;
 
 import controllers.game.Trainer;
