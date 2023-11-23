@@ -7,6 +7,7 @@ import java.awt.Graphics;
 import javax.swing.JPanel;
 
 import controllers.controls.KeyHandler;
+import interfaces.combat.Combat;
 import interfaces.map.Map;
 import interfaces.start.Start;
 
@@ -31,6 +32,7 @@ public class GamePanel extends JPanel implements Runnable {
 
     private Start startPanel;
     private Map mapPanel;
+    private Combat combatPanel;
     public KeyHandler key = new KeyHandler();
 
 //#endregion
@@ -41,7 +43,8 @@ public class GamePanel extends JPanel implements Runnable {
 
     public enum GameState {
         START_SCREEN,
-        MAP_SCREEN
+        MAP_SCREEN,
+        COMBAT_SCREEN
     }
 
     private GameState currentState;
@@ -61,6 +64,10 @@ public class GamePanel extends JPanel implements Runnable {
         
         this.mapPanel = new Map(this, startPanel.getPlayer(), startPanel.getRival());
         currentState = GameState.MAP_SCREEN;
+
+        this.combatPanel = new Combat(this, startPanel.getPlayer(), startPanel.getRival());
+        currentState = GameState.COMBAT_SCREEN;
+
         startGameThread();
     }
 
