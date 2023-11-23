@@ -11,9 +11,9 @@ public class Sound {
     public Sound(InputStream inputStream) {
         try {
 
-            System.out.println("Creating AudioInputStream");
+            // System.out.println("Creating AudioInputStream");
             AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(inputStream);
-            System.out.println("AudioInputStream created successfully");
+            // System.out.println("AudioInputStream created successfully");
 
             // Verificar se o formato do AudioInputStream é suportado
             AudioFormat format = audioInputStream.getFormat();

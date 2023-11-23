@@ -1,55 +1,34 @@
 package interfaces.map;
 
-import java.awt.Graphics;
+import interfaces.map.data.MapDataManager;
+import interfaces.map.tile.TileManager;
+
 import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
 
-import javax.imageio.ImageIO;
-import javax.swing.JPanel;
 
-import controllers.combat.Trainer;
-import controllers.entity.Player;
-import interfaces.GamePanel;
+public class Map extends MapDataManager {
 
-public class Map extends JPanel {
+    TileManager tm;
 
-    int player_x = 0;
-    int player_y = 0;
-    int player_speed = 1;
-    Player player;
-    GamePanel screen;
+    final int scale = 3;
 
-    public Map(GamePanel screen, Trainer playerTrainer, Trainer rivalTrainer) {
+    public int max_screen_col = 16;
+    public int max_screen_row = 12;
 
-        this.screen = screen;
-        this.player = new Player(screen, screen.key, playerTrainer.getCharater());
-        player.setDefaultValues(player_x, player_y, screen.tile_size, screen.tile_size, player_speed);   
+    private int original_tile_size = 16;
+    public int tile_size = original_tile_size * scale;  
+
+    public int screen_width = tile_size * max_screen_col;
+    public int screen_height = tile_size * max_screen_row;
+
+    public Map(String mapName) {
+
+        super(mapName);
+        tm = new TileManager(this); // Passa a instância atual de Map para TileManager
     }
 
-    public void update() {
-        
-        player.update();
-    }
+    public void loadMap(Graphics2D g2d) {
 
-    public void paintComponents(Graphics g) {
-        
-        super.paintComponent(g);
-
-        Graphics2D g2d = (Graphics2D) g;
-
-        BufferedImage background = null;
-
-        final String relative_path = "/sprites/map/";
-        try {
-            background = ImageIO.read(getClass().getResource(relative_path + "map.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        
-        g2d.drawImage(background, 0, 0, screen.screen_width, screen.screen_height, null);
-        player.draw(g2d);
-
-        g2d.dispose();
+        tm.drawTiles(g2d);
     }
 }

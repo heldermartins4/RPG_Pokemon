@@ -6,10 +6,12 @@ public class SoundFX {
     
     Sound sfx; // Sound effect
 
-    public void play(InputStream sound) {
-        // System.out.println("Playing sound: " + sound);
+    public void play(String sound) {
+        
+        InputStream is = getClass().getResourceAsStream("/sounds/sfx/"+sound);
+
         try {
-            this.sfx = new Sound(sound);
+            this.sfx = new Sound(is);
             this.sfx.play();
         } catch (Exception e) {
             e.printStackTrace();
