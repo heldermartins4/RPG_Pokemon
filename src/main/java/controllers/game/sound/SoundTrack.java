@@ -15,9 +15,9 @@ public class SoundTrack {
     public void addTrack(int index, InputStream inputStream) {
         if (index >= 0 && index < tracks.length) {
             try {
-                System.out.println("Adding track at index " + index);
+                // System.out.println("Adding track at index " + index);
                 tracks[index] = new Sound(inputStream);
-                System.out.println("Track added successfully");
+                // System.out.println("Track added successfully");
             } catch (Exception e) {
                 e.printStackTrace();
             }
