@@ -32,9 +32,9 @@ public class Map extends JPanel {
         player.update();
     }
 
-    public void paintComponents(Graphics g) {
+    public void paintComponent(Graphics g) {
         
-        super.paintComponent(g);
+        super.paintComponents(g);
 
         Graphics2D g2d = (Graphics2D) g;
 

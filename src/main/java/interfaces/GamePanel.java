@@ -32,7 +32,7 @@ public class GamePanel extends JPanel implements Runnable {
 
     private Start startPanel;
     private Map mapPanel;
-    private Combat combatPanel;
+    // private Combat combatPanel;
     public KeyHandler key = new KeyHandler();
 
 //#endregion
@@ -65,8 +65,8 @@ public class GamePanel extends JPanel implements Runnable {
         this.mapPanel = new Map(this, startPanel.getPlayer(), startPanel.getRival());
         currentState = GameState.MAP_SCREEN;
 
-        this.combatPanel = new Combat(this, startPanel.getPlayer(), startPanel.getRival());
-        currentState = GameState.COMBAT_SCREEN;
+        // this.combatPanel = new Combat(this, startPanel.getPlayer(), startPanel.getRival());
+        // currentState = GameState.COMBAT_SCREEN;
 
         startGameThread();
     }
@@ -115,11 +115,10 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void paintComponent(Graphics g) {
-        
         super.paintComponent(g);
-
+    
         if (currentState == GameState.MAP_SCREEN) {
-            mapPanel.paintComponents(g);
+            mapPanel.paintComponent(g);
         }
     }
 }
