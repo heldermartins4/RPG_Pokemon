@@ -28,7 +28,7 @@ public class Pokedex extends Choices {
     String bulbasaurSprite = "";
 
     // Da uma instância NOVA de pokemon para um objeto treinador
-    public void givePokemon(Treinador treinador, int i) {
+    public void givePokemon(Trainer treinador, int i) {
         switch (i) {
             case 0:
                 treinador.setPokemon(new Pokemon("CHARMANDER", "FIRE", 39, 52, 60, 43, 50, 65, 100, charmanderMoves, charmanderSprite));   

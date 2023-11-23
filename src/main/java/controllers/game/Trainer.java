@@ -1,12 +1,12 @@
 package controllers.game;
 
-public class Treinador {
+public class Trainer {
     private String nome;
     private int dinheiro;
     private Pokemon pokemon;
     private String character;
 
-    public Treinador(String nome, String character) {
+    public Trainer(String nome, String character) {
         this.nome = nome;
         this.dinheiro = 200;
         this.character = character;

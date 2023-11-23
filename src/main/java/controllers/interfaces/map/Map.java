@@ -8,6 +8,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
+import controllers.game.Trainer;
 import controllers.game.entity.Player;
 import controllers.interfaces.GamePanel;
 
@@ -19,9 +20,10 @@ public class Map extends JPanel {
     Player player;
     GamePanel screen;
 
-    public Map(GamePanel screen) {
+    public Map(GamePanel screen, Trainer playerTrainer, Trainer rivalTrainer) {
+
         this.screen = screen;
-        this.player = new Player(screen, screen.key);
+        this.player = new Player(screen, screen.key, playerTrainer.getCharater());
         player.setDefaultValues(player_x, player_y, screen.tile_size, screen.tile_size, player_speed);   
     }
 
@@ -30,8 +32,7 @@ public class Map extends JPanel {
         player.update();
     }
 
-
-    public void paintComponent(Graphics g) {
+    public void paintComponents(Graphics g) {
         
         super.paintComponent(g);
 

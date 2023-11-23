@@ -18,15 +18,19 @@ public class Player extends Entity {
     private int sprite_timer = 0;
     private int next_x, next_y;
     private boolean is_walking = false;
+    public String playerImagePath;
 
-    public Player(GamePanel gp, KeyHandler key) {
+    public Player(GamePanel gp, KeyHandler key, String playerImagePath) {
+
         this.gp = gp;
         this.key = key;
+        this.playerImagePath = playerImagePath;
         player_sprite = new Sprites[12];
         getImagePlayer();
     }
 
     public void setDefaultValues(int x, int y, int width, int height, int speed) {
+
         this.x = x;
         this.y = y;
         this.width = width;
@@ -40,7 +44,7 @@ public class Player extends Entity {
     }
 
     public void getImagePlayer() {
-        final String relative_path = "/sprites/characters/zeze/";
+        final String relative_path = playerImagePath;
 
         try {
             for (int i = 0; i < 12; i++) {

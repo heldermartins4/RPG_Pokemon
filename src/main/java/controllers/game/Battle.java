@@ -2,11 +2,11 @@ package controllers.game;
 
 import java.util.Scanner;
 
-public class Batalha {
-    private Treinador p1;
-    private Treinador p2;
+public class Battle {
+    private Trainer p1;
+    private Trainer p2;
 
-    public Batalha(Treinador jogador, Treinador inimigo) {
+    public Battle(Trainer jogador, Trainer inimigo) {
         this.p1 = jogador;
         this.p2 = inimigo;
     }
@@ -14,8 +14,8 @@ public class Batalha {
     public void batalhar() {
         Scanner teclado = new Scanner(System.in);
         boolean stop = false;
-        Treinador primeiro;
-        Treinador segundo;
+        Trainer primeiro;
+        Trainer segundo;
 
         while (!stop) {
 

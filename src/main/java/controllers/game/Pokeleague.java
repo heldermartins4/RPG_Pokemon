@@ -8,12 +8,12 @@ public class Pokeleague {
         // Iniciar jogador
         System.out.println("\nWhat`s your name?");
         String nome = teclado.nextLine();
-        Treinador jogador = new Treinador(nome,"");
+        Trainer jogador = new Trainer(nome,"");
 
         // Iniciar inimigo
         System.out.println("\nWhat`s your rival`s name?");
         nome = teclado.nextLine();
-        Treinador inimigo = new Treinador(nome, "");
+        Trainer inimigo = new Trainer(nome, "");
 
         // Iniciar pokedex
         Pokedex pokedex = new Pokedex();        
@@ -25,7 +25,7 @@ public class Pokeleague {
         pokedex.givePokemon(inimigo, i);
         
         // Iniciar batalha
-        Batalha game = new Batalha(jogador, inimigo);
+        Battle game = new Battle(jogador, inimigo);
         game.batalhar();
 
         // Resultado

@@ -9,6 +9,8 @@ import controllers.interfaces.start.Start;
 
 public class GamePanel extends JPanel implements Runnable {
 
+//#region Screen variables
+
     final int scale = 3;
 
     public int max_screen_col = 16;
@@ -20,40 +22,42 @@ public class GamePanel extends JPanel implements Runnable {
     public int screen_width = tile_size * max_screen_col;
     public int screen_height = tile_size * max_screen_row;
 
-    private CardLayout cardLayout;
-    private JPanel cardPanel;
+//#endregion
 
-    int fps = 60;
-    private long last_update_time = System.nanoTime();
-
-    public KeyHandler key = new KeyHandler();
+//#region Classes
 
     private Start startPanel;
     private Map mapPanel;
+    public KeyHandler key = new KeyHandler();
 
+//#endregion
+
+    int fps = 60;
+    private long last_update_time = System.nanoTime();
     Thread game_thread;
 
+    public enum GameState {
+        START_SCREEN,
+        MAP_SCREEN
+    }
+
+    private GameState currentState;
+
     public GamePanel() {
+
         this.setPreferredSize(new Dimension(screen_width, screen_height));
-
-        cardLayout = new CardLayout();
-        cardPanel = new JPanel(cardLayout);
-
-        this.startPanel = new Start(this);
-        cardPanel.add(startPanel, "start");
-
-        this.mapPanel = new Map(this);
-        cardPanel.add(mapPanel, "map");
-
-        setLayout(new BorderLayout());
-        add(cardPanel, BorderLayout.CENTER);
-        cardLayout.show(cardPanel, "start");
-        cardLayout.show(cardPanel, "map");
+        setBackground(Color.BLACK);
 
         this.setDoubleBuffered(true);
         setFocusable(true);
         addKeyListener(key);
 
+        this.startPanel = new Start(this);
+        currentState = GameState.START_SCREEN;
+        startPanel.runStartSequence();
+        
+        this.mapPanel = new Map(this, startPanel.getPlayer(), startPanel.getRival());
+        currentState = GameState.MAP_SCREEN;
         startGameThread();
     }
 
@@ -73,7 +77,10 @@ public class GamePanel extends JPanel implements Runnable {
             last_update_time = now;
 
             while (delta >= 1) {
-                update();
+                if (currentState == GameState.MAP_SCREEN) {
+                    update();
+                }
+
                 delta--;
             }
 
@@ -90,27 +97,19 @@ public class GamePanel extends JPanel implements Runnable {
         }
     }
 
-    public void showPanel(String panelName) {
-        cardLayout.show(cardPanel, panelName);
-    }
-
     public void update() {
-        mapPanel.update();
+
+        if (currentState == GameState.MAP_SCREEN) {
+            mapPanel.update();
+        }
     }
 
     public void paintComponent(Graphics g) {
-        mapPanel.paintComponent(g);
-    }
+        
+        super.paintComponent(g);
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            JFrame frame = new JFrame("Game Frame");
-            GamePanel gamePanel = new GamePanel();
-            frame.getContentPane().add(gamePanel);
-            frame.pack();
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.setLocationRelativeTo(null);
-            frame.setVisible(true);
-        });
+        if (currentState == GameState.MAP_SCREEN) {
+            mapPanel.paintComponents(g);
+        }
     }
 }
