@@ -1,5 +1,4 @@
-
-package controllers.game.controls;
+package controllers.controls;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;

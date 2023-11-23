@@ -6,8 +6,8 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-import controllers.game.controls.KeyHandler;
-import controllers.interfaces.GamePanel;
+import controllers.controls.KeyHandler;
+import interfaces.GamePanel;
 
 public class Player extends Entity {
 

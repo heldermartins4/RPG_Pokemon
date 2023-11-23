@@ -1,4 +1,4 @@
-package controllers.game.sound;
+package controllers.sound;
 
 import java.io.InputStream;
 

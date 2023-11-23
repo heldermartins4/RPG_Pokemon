@@ -1,4 +1,4 @@
-package controllers.game.entity;
+package controllers.entity;
 
 // import java.awt.image.BufferedImage;
 

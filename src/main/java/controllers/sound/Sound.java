@@ -1,5 +1,5 @@
 
-package controllers.game.sound;
+package controllers.sound;
 
 import javax.sound.sampled.*;
 import java.io.IOException;

@@ -1,4 +1,6 @@
-package controllers.game.sound;
+package controllers.
+
+sound;
 
 // import java.io.File;
 import java.io.InputStream;
