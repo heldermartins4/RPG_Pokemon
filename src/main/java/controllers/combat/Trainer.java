@@ -1,6 +1,7 @@
 package controllers.combat;
 
 public class Trainer {
+    
     private String nome;
     private int dinheiro;
     private Pokemon pokemon;

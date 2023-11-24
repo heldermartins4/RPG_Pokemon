@@ -1,45 +1,32 @@
 package interfaces;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics;
-
 import javax.swing.JPanel;
 
 import controllers.controls.KeyHandler;
-import interfaces.combat.Combat;
+import controllers.entity.Player;
+
 import interfaces.map.Map;
 import interfaces.start.Start;
 
+import java.awt.*;
+
 public class GamePanel extends JPanel implements Runnable {
-
-//#region Screen variables
-
-    final int scale = 3;
-
-    public int max_screen_col = 16;
-    public int max_screen_row = 12;
-
-    private int original_tile_size = 16;
-    public int tile_size = original_tile_size * scale;
-
-    public int screen_width = tile_size * max_screen_col;
-    public int screen_height = tile_size * max_screen_row;
-
-//#endregion
-
-//#region Classes
-
-    private Start startPanel;
-    private Map mapPanel;
-    // private Combat combatPanel;
+    
+    Map map = new Map("map_1");
     public KeyHandler key = new KeyHandler();
+    Player player;
 
-//#endregion
+    Start start_panel;
+
+    Thread game_thread;
+
+
+    int player_x = map.tile_size * 2;
+    int player_y = map.tile_size * 2;
+    int player_speed = 4;
 
     int fps = 60;
     private long last_update_time = System.nanoTime();
-    Thread game_thread;
 
     public enum GameState {
         START_SCREEN,
@@ -49,26 +36,35 @@ public class GamePanel extends JPanel implements Runnable {
 
     private GameState currentState;
 
-    public GamePanel() {
+    public GameState getCurrentState() {
+        return currentState;
+    }
 
-        this.setPreferredSize(new Dimension(screen_width, screen_height));
-        setBackground(Color.BLACK);
+    public void setCurrentState(GameState currentState) {
+        this.currentState = currentState;
+    }
+    
+    public GamePanel() {
+        this.setPreferredSize(new Dimension(map.screen_width, map.screen_height));
 
         this.setDoubleBuffered(true);
-        setFocusable(true);
-        addKeyListener(key);
 
-        this.startPanel = new Start(this);
+        this.start_panel = new Start(this);
+
         currentState = GameState.START_SCREEN;
-        startPanel.runStartSequence();
+
+        start_panel.runStartSequence();
         
-        this.mapPanel = new Map(this, startPanel.getPlayer(), startPanel.getRival());
+        // this.mapPanel = new Map(this, startPanel.getPlayer(), startPanel.getRival());
+
+        this.map = new Map("map_1");
+
+        this.player = new Player(this, key);
+
         currentState = GameState.MAP_SCREEN;
-
-        // this.combatPanel = new Combat(this, startPanel.getPlayer(), startPanel.getRival());
-        // currentState = GameState.COMBAT_SCREEN;
-
-        startGameThread();
+        
+        player.setDefaultValues(player_x, player_y, map.tile_size, map.tile_size, player_speed);
+        player.setMapToPlayer(map);
     }
 
     public void startGameThread() {
@@ -87,10 +83,7 @@ public class GamePanel extends JPanel implements Runnable {
             last_update_time = now;
 
             while (delta >= 1) {
-                if (currentState == GameState.MAP_SCREEN) {
-                    update();
-                }
-
+                update();
                 delta--;
             }
 
@@ -100,7 +93,7 @@ public class GamePanel extends JPanel implements Runnable {
                 double remaining_time = (last_update_time - now + draw_interval) / 1_000_000_000;
                 remaining_time = remaining_time < 0 ? 0 : remaining_time;
 
-                Thread.sleep((long) remaining_time);
+                Thread.sleep((long)remaining_time);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -108,17 +101,24 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void update() {
-
-        if (currentState == GameState.MAP_SCREEN) {
-            mapPanel.update();
-        }
+        
+        player.update();
     }
 
     public void paintComponent(Graphics g) {
+        
         super.paintComponent(g);
-    
-        if (currentState == GameState.MAP_SCREEN) {
-            mapPanel.paintComponent(g);
-        }
+
+        Graphics2D g2d = (Graphics2D) g;
+
+        map.loadMap(g2d);
+        
+        player.draw(g2d);
+
+        g2d.dispose();
+    }
+
+    public Start getStartPanel() {
+        return this.start_panel;
     }
 }
