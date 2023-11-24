@@ -1,5 +1,6 @@
 package interfaces;
 
+import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
 import controllers.controls.KeyHandler;
@@ -9,6 +10,8 @@ import interfaces.map.Map;
 import interfaces.start.Start;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 
 public class GamePanel extends JPanel implements Runnable {
     
@@ -45,6 +48,7 @@ public class GamePanel extends JPanel implements Runnable {
     }
     
     public GamePanel() {
+
         this.setPreferredSize(new Dimension(map.screen_width, map.screen_height));
 
         this.setDoubleBuffered(true);
@@ -111,7 +115,19 @@ public class GamePanel extends JPanel implements Runnable {
 
         Graphics2D g2d = (Graphics2D) g;
 
-        map.loadMap(g2d);
+        // map.loadMap(g2d);
+
+        /* Certainly this could so much better, but I WANNA SLEEP */ 
+        BufferedImage background = null;
+
+        final String relative_path = "/sprites/map/";
+        try {
+            background = ImageIO.read(getClass().getResource(relative_path + "map.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        
+        g2d.drawImage(background, 0, 0, map.screen_width, map.screen_height, null);
         
         player.draw(g2d);
 

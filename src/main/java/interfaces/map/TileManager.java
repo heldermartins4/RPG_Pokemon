@@ -13,6 +13,7 @@ public class TileManager {
     }
 
     public void drawTiles(Graphics2D g2d) {
+        
         for (int y = 0; y < map.map_y; y++) {
             for (int x = 0; x < map.map_x; x++) {
                 if (map.map_data[x][y] == 0) {

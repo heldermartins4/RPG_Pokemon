@@ -20,6 +20,7 @@ public class Container extends JFrame {
     }
 
     public void initialize() {
+
         GamePanel screen = new GamePanel();
         BufferedImage icon = null;
 
