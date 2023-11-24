@@ -1,6 +1,7 @@
 package controllers.entity;
 
 import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
@@ -8,15 +9,21 @@ import javax.imageio.ImageIO;
 import controllers.controls.KeyHandler;
 import interfaces.GamePanel;
 import interfaces.map.Map;
+import interfaces.start.Start;
 
 public class Player extends Entity {
 
     GamePanel gp;
     KeyHandler key;
     Map map;
+    Start start_panel;
 
     Sprites[] player_sprite;
     Sprites player_direction = new Sprites();
+
+    // private int player_sprites_amount;
+    // private int player_direction_indexes;
+    // private String player_sprites_path;
 
     int sprite_timer = 0;
 
@@ -28,9 +35,14 @@ public class Player extends Entity {
 
         this.gp = gp;
         this.key = key;
+        this.start_panel = gp.getStartPanel();
+
+        // this.player_sprites_amount = 12;
+        // this.player_direction_indexes = 3;
 
         player_sprite = new Sprites[12];  // inicializa o array
-        getImagePlayer();
+
+        getImagePlayer(this.start_panel.getPlayer().getCharater());
     }
 
     public void setDefaultValues(int x, int y, int width, int height, int speed) {
@@ -57,9 +69,9 @@ public class Player extends Entity {
         this.map = map;
     }
 
-    public void getImagePlayer() {
+    public void getImagePlayer(String player_chosen) {
 
-        final String relative_path = "/sprites/characters/zeze/";
+        final String relative_path = player_chosen; // path to the image folder
 
         try {
             for (int i = 0; i < 12; i++) {
@@ -67,13 +79,13 @@ public class Player extends Entity {
                 player_sprite[i] = new Sprites();  // initialize each element
 
                 if (i < 3)
-                    player_sprite[i].sprite_img = ImageIO.read(getClass().getResource(relative_path + "u" + (i + 1) + ".png"));
+                    player_sprite[i].sprite_img = ImageIO.read(getClass().getResource(relative_path + "/u" + (i + 1) + ".png"));
                 else if (i < 6)
-                    player_sprite[i].sprite_img = ImageIO.read(getClass().getResource(relative_path + "d" + (i - 2) + ".png"));
+                    player_sprite[i].sprite_img = ImageIO.read(getClass().getResource(relative_path + "/d" + (i - 2) + ".png"));
                 else if (i < 9)
-                    player_sprite[i].sprite_img = ImageIO.read(getClass().getResource(relative_path + "l" + (i - 5) + ".png"));
+                    player_sprite[i].sprite_img = ImageIO.read(getClass().getResource(relative_path + "/l" + (i - 5) + ".png"));
                 else if (i < 12)
-                    player_sprite[i].sprite_img = ImageIO.read(getClass().getResource(relative_path + "r" + (i - 8) + ".png"));
+                    player_sprite[i].sprite_img = ImageIO.read(getClass().getResource(relative_path + "/r" + (i - 8) + ".png"));
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -200,67 +212,67 @@ public class Player extends Entity {
 
     public void draw(Graphics2D g2d) {
 
-        g2d.setColor(java.awt.Color.white);
-        g2d.fillRect(x, y, map.tile_size, map.tile_size);
+        // g2d.setColor(java.awt.Color.white);
+        // g2d.fillRect(x, y, map.tile_size, map.tile_size);
 
-        // BufferedImage img = null; // set default image
+        BufferedImage img = null; // set default image
 
-        // // set image based on direction
-        // switch (player_direction.direction) {
-        //     case "up":
-        //         switch (this.sprite_counting) {
-        //             case 0:
-        //                 img = player_sprite[0].sprite_img;
-        //                 break;
-        //             case 1:
-        //                 img = player_sprite[1].sprite_img;
-        //                 break;
-        //             case 2:
-        //                 img = player_sprite[2].sprite_img;
-        //                 break;
-        //         }
-        //         break;
-        //     case "down":
-        //         switch (this.sprite_counting) {
-        //             case 0:
-        //                 img = player_sprite[3].sprite_img;
-        //                 break;
-        //             case 1:
-        //                 img = player_sprite[4].sprite_img;
-        //                 break;
-        //             case 2:
-        //                 img = player_sprite[5].sprite_img;
-        //                 break;
-        //         }
-        //         break;
-        //     case "left":
-        //         switch (this.sprite_counting) {
-        //             case 0:
-        //                 img = player_sprite[6].sprite_img;
-        //                 break;
-        //             case 1:
-        //                 img = player_sprite[7].sprite_img;
-        //                 break;
-        //             case 2:
-        //                 img = player_sprite[8].sprite_img;
-        //                 break;
-        //         }
-        //         break;
-        //     case "right":
-        //         switch (this.sprite_counting) {
-        //             case 0:
-        //                 img = player_sprite[9].sprite_img;
-        //                 break;
-        //             case 1:
-        //                 img = player_sprite[10].sprite_img;
-        //                 break;
-        //             case 2:
-        //                 img = player_sprite[11].sprite_img;
-        //                 break;
-        //         }
-        //         break;
-        // }
+        // set image based on direction
+        switch (player_direction.direction) {
+            case "up":
+                switch (this.sprite_counting) {
+                    case 0:
+                        img = player_sprite[0].sprite_img;
+                        break;
+                    case 1:
+                        img = player_sprite[1].sprite_img;
+                        break;
+                    case 2:
+                        img = player_sprite[2].sprite_img;
+                        break;
+                }
+                break;
+            case "down":
+                switch (this.sprite_counting) {
+                    case 0:
+                        img = player_sprite[3].sprite_img;
+                        break;
+                    case 1:
+                        img = player_sprite[4].sprite_img;
+                        break;
+                    case 2:
+                        img = player_sprite[5].sprite_img;
+                        break;
+                }
+                break;
+            case "left":
+                switch (this.sprite_counting) {
+                    case 0:
+                        img = player_sprite[6].sprite_img;
+                        break;
+                    case 1:
+                        img = player_sprite[7].sprite_img;
+                        break;
+                    case 2:
+                        img = player_sprite[8].sprite_img;
+                        break;
+                }
+                break;
+            case "right":
+                switch (this.sprite_counting) {
+                    case 0:
+                        img = player_sprite[9].sprite_img;
+                        break;
+                    case 1:
+                        img = player_sprite[10].sprite_img;
+                        break;
+                    case 2:
+                        img = player_sprite[11].sprite_img;
+                        break;
+                }
+                break;
+        }
 
-        // g.drawImage(img, x, y, map.tile_size, map.tile_size, null);
+        g2d.drawImage(img, x, y, map.tile_size, map.tile_size, null);
     }
 }

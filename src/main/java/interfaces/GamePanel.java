@@ -4,17 +4,21 @@ import javax.swing.JPanel;
 
 import controllers.controls.KeyHandler;
 import controllers.entity.Player;
+
 import interfaces.map.Map;
+import interfaces.start.Start;
 
 import java.awt.*;
 
 public class GamePanel extends JPanel implements Runnable {
     
     Map map = new Map("map_1");
-    Thread game_thread;
-    
     public KeyHandler key = new KeyHandler();
-    Player player = new Player(this, key);
+    Player player;
+
+    Start start_panel;
+
+    Thread game_thread;
 
 
     int player_x = map.tile_size * 2;
@@ -23,11 +27,41 @@ public class GamePanel extends JPanel implements Runnable {
 
     int fps = 60;
     private long last_update_time = System.nanoTime();
+
+    public enum GameState {
+        START_SCREEN,
+        MAP_SCREEN,
+        COMBAT_SCREEN
+    }
+
+    private GameState currentState;
+
+    public GameState getCurrentState() {
+        return currentState;
+    }
+
+    public void setCurrentState(GameState currentState) {
+        this.currentState = currentState;
+    }
     
     public GamePanel() {
         this.setPreferredSize(new Dimension(map.screen_width, map.screen_height));
 
         this.setDoubleBuffered(true);
+
+        this.start_panel = new Start(this);
+
+        currentState = GameState.START_SCREEN;
+
+        start_panel.runStartSequence();
+        
+        // this.mapPanel = new Map(this, startPanel.getPlayer(), startPanel.getRival());
+
+        this.map = new Map("map_1");
+
+        this.player = new Player(this, key);
+
+        currentState = GameState.MAP_SCREEN;
         
         player.setDefaultValues(player_x, player_y, map.tile_size, map.tile_size, player_speed);
         player.setMapToPlayer(map);
@@ -82,5 +116,9 @@ public class GamePanel extends JPanel implements Runnable {
         player.draw(g2d);
 
         g2d.dispose();
+    }
+
+    public Start getStartPanel() {
+        return this.start_panel;
     }
 }
